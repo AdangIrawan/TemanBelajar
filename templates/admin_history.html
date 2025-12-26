@@ -1,0 +1,101 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<h4 class="mb-3">Riwayat Chat</h4>
+
+<form class="row g-2 mb-3" method="get">
+  <div class="col-lg-3 col-md-4 col-sm-6">
+    <input type="text" class="form-control" name="q" value="{{ q }}" placeholder="Cari di pesan…">
+  </div>
+  <div class="col-lg-3 col-md-4 col-sm-6">
+    <input type="text" class="form-control" name="username" value="{{ username }}" placeholder="username/email tepat…">
+  </div>
+  <div class="col-lg-2 col-md-4 col-sm-6">
+    <select class="form-select" name="subject">
+      <option value="">Semua Mapel</option>
+      {% for k, v in subjects.items() %}
+        <option value="{{ k }}" {% if subject==k %}selected{% endif %}>{{ v.label }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-lg-2 col-md-4 col-sm-6">
+    <select class="form-select" name="role">
+      <option value="">Semua Role</option>
+      <option value="user" {% if role=='user' %}selected{% endif %}>user</option>
+      <option value="bot"  {% if role=='bot' %}selected{% endif %}>bot</option>
+    </select>
+  </div>
+  <div class="col-lg-1 col-md-3 col-sm-6">
+    <input type="number" class="form-control" name="per_page" value="{{ per_page }}" min="5" max="200" title="Jumlah per halaman">
+  </div>
+  <div class="col-lg-1 col-md-3 col-sm-6">
+    <button class="btn btn-primary w-100">Filter</button>
+  </div>
+</form>
+
+<div class="table-responsive">
+  <table class="table table-sm table-hover align-middle">
+    <thead>
+      <tr>
+        <th style="width:72px">ID</th>
+        <th style="width:160px">Waktu (WIB)</th>
+        <th style="width:220px">User</th>
+        <th style="width:120px">Subject</th>
+        <th style="width:90px">Role</th>
+        <th>Message</th>
+        <th style="width:90px">Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for it in items %}
+      <tr>
+        <td>{{ it.id }}</td>
+        <td>{{ it.timestamp|fmt_ts }}</td>
+        <td>
+          <div>{{ it.username }}</div>
+          <div class="text-muted" style="font-size:.86rem">{{ it.email }}</div>
+        </td>
+        <td><span class="subject-chip">{{ it.subject }}</span></td>
+        <td>
+          <span class="badge text-bg-{{ 'secondary' if it.role=='user' else 'info' }}">{{ it.role }}</span>
+        </td>
+        <td>
+          <div class="truncate-3" title="{{ it.message }}">{{ it.message }}</div>
+        </td>
+        <td class="text-nowrap">
+          <form action="{{ url_for('admin_delete_chat', chat_id=it.id) }}"
+                method="post" style="display:inline"
+                onsubmit="return confirm('Hapus riwayat chat #{{it.id}}?');">
+            <button class="btn btn-sm btn-outline-danger">Hapus</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="7" class="text-center text-muted py-4">Belum ada data riwayat yang cocok.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% set last = (total // per_page) + (1 if total % per_page else 0) %}
+<nav aria-label="pagination">
+  <ul class="pagination">
+    <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+      <a class="page-link"
+         href="{{ url_for('admin_history', q=q, username=username, subject=subject, role=role, per_page=per_page, page=page-1) }}">Prev</a>
+    </li>
+    <li class="page-item disabled">
+      <span class="page-link">Page {{ page }} / {{ last or 1 }}</span>
+    </li>
+    <li class="page-item {% if page >= last %}disabled{% endif %}">
+      <a class="page-link"
+         href="{{ url_for('admin_history', q=q, username=username, subject=subject, role=role, per_page=per_page, page=page+1) }}">Next</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="admin-footer">Total baris: <strong>{{ total }}</strong></div>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="hero">
+  <h1>Teman Belajar</h1>
+  <nav class="nav">
+    <a class="nav-link" href="{{ url_for('subjects') }}">Home</a>
+    <a class="nav-link" href="{{ url_for('about') }}">About</a>
+
+    {% if session.get('logged_in') %}
+      <a class="nav-link" href="{{ url_for('auth_logout') }}">Logout</a>
+    {% endif %}
+
+    {% if session.get('is_admin') %}
+      <a class="nav-link nav-admin" href="{{ url_for('admin_dashboard') }}">Admin</a>
+    {% endif %}
+  </nav>
+</header>
+
+
+<section class="welcome">
+  <h2>Selamat Datang di Teman Belajar</h2>
+  <p>Platform pembelajaran online untuk membantu Anda memahami materi pelajaran dengan lebih mudah</p>
+</section>
+
+<section class="subjects">
+  <h3>Mata Pelajaran</h3>
+  <div class="grid">
+    {% for key, cfg in subjects.items() %}
+      <a class="card" href="{{ url_for('chat_subject', subject_key=key) }}">
+        <h4>{{ cfg.label }}</h4>
+        <p>{{ cfg.desc }}</p>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

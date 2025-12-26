@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="header">
+  <h2>About</h2>
+  <a class="link" href="{{ url_for('subjects') }}">← Kembali ke Home</a>
+</header>
+
+<main class="main about">
+  <h3>Teman Belajar</h3>
+  <p>
+    Virtual Asisten ini merupakan sistem pembelajaran berbasis Retrieval Augmented Generation (RAG)
+    yang dirancang untuk membantu siswa memahami materi IPAS, PJOK, dan Pancasila lewat tanya jawab
+    serta diamankan oleh Guardrail berbasis klasifikasi kalimat.
+  </p>
+
+  <h4>Identitas</h4>
+  <ul class="bio">
+    <li><strong>Nama:</strong> Adang Irawan</li>
+    <li><strong>NIM:</strong> 535220192</li>
+    <li><strong>Program Studi:</strong> Teknik Informatika</li>
+    <li><strong>Fakultas:</strong> Teknologi Informasi</li>
+    <li><strong>Universitas:</strong> Tarumanagara</li>
+    <li><strong>Judul Skripsi:</strong> Implementasi Guardrail dan Retrieval Augmented Generator (RAG) pada Virtual Asisten Pendidikan Sekolah Dasar Berbasis LLM</li>
+    <li><strong>Dosen Pembimbing Utama:</strong> Viny Christanti Mawardi, S.Kom., M.Kom.</li>
+    <li><strong>Dosen Pembimbing Pendamping:</strong> Irvan Lewenusa, S.Kom., M.Kom.</li>
+  </ul>
+
+  <h4>Cara Penggunaan</h4>
+  <ol>
+    <li>Pilih mata pelajaran (IPAS, PJOK, Pancasila).</li>
+    <li>Ketik pertanyaan di kotak chat sejelas mungkin (karena model LLM yang digunakan tergolong ringan).</li>
+    <li>Sistem menjawab berdasarkan database mapel terpilih.</li>
+  </ol>
+
+  <h4>Foto Profil</h4>
+  <div class="foto-grid">
+    <div class="foto-item">
+      <img src="{{ url_for('static', filename='images/badadang.jpg') }}" alt="Adang Irawan">
+      <h5>Adang Irawan</h5>
+      <p>NIM: 535220192</p>
+    </div>
+    <div class="foto-item">
+      <img src="{{ url_for('static', filename='images/bu viny.jpg') }}" alt="Viny Christanti Mawardi">
+      <h5>Viny Christanti Mawardi, S.Kom., M.Kom.</h5>
+      <p>Dosen Pembimbing Utama</p>
+    </div>
+    <div class="foto-item">
+      <img src="{{ url_for('static', filename='images/pak irvan.jpg') }}" alt="Irvan Lewenusa">
+      <h5>Irvan Lewenusa, S.Kom., M.Kom.</h5>
+      <p>Dosen Pembimbing Pendamping</p>
+    </div>
+  </div>
+</main>
+{% endblock %}

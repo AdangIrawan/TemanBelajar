@@ -1,0 +1,30 @@
+{% extends "admin_base.html" %}
+{% block content %}
+<h4 class="mb-3">Dashboard</h4>
+<div class="row g-3">
+  <div class="col-md-3">
+    <div class="card"><div class="card-body">
+      <div class="fs-1">{{ total_users }}</div>
+      <div class="text-muted">Total Users</div>
+    </div></div>
+  </div>
+  <div class="col-md-3">
+    <div class="card"><div class="card-body">
+      <div class="fs-1">{{ total_active }}</div>
+      <div class="text-muted">Active Users</div>
+    </div></div>
+  </div>
+  <div class="col-md-3">
+    <div class="card"><div class="card-body">
+      <div class="fs-1">{{ total_admins }}</div>
+      <div class="text-muted">Admin</div>
+    </div></div>
+  </div>
+  <div class="col-md-3">
+    <div class="card"><div class="card-body">
+      <div class="fs-1">{{ total_msgs }}</div>
+      <div class="text-muted">Total Messages</div>
+    </div></div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-bg">
+  <div class="auth-card" style="width:420px;">
+    <h1 class="auth-title">Reset Password</h1>
+    <p class="auth-subtitle">
+      Masukkan password baru Anda.
+    </p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, msg in messages %}
+        <div class="flash {{ category }}">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST">
+      <input
+        name="password"
+        type="password"
+        placeholder="Password Baru"
+        autocomplete="new-password"
+        required
+      >
+      <input
+        name="confirm"
+        type="password"
+        placeholder="Konfirmasi Password"
+        autocomplete="new-password"
+        required
+      >
+      <button class="btn" type="submit">Update Password</button>
+    </form>
+
+    <p class="muted">
+      <a href="{{ url_for('auth_login') }}">Kembali ke Login</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

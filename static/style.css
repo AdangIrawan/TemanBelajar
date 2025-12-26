@@ -1,0 +1,343 @@
+/* static/style.css – tambahan ringkas biar mirip SS */
+body { font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif; background:#f5f7fb; margin:0; }
+.container { max-width: 980px; margin: 0 auto; padding: 24px; }
+
+.hero { background:#4a6ea9; color:#fff; padding:28px 24px; border-radius:12px; }
+.hero h1 { margin:0 0 8px; letter-spacing:1px; }
+.nav a { color:#e8eefc; margin-right:16px; text-decoration:none; font-weight:600; }
+.nav a[aria-disabled="true"] { opacity:.6; pointer-events:none; }
+
+.welcome { text-align:center; padding:28px 0; }
+.welcome h2 { margin:0 0 8px; color:#2b3852; }
+
+.subjects h3 { text-align:center; color:#2b3852; margin-bottom:16px; }
+.grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:18px; }
+.card { display:block; background:linear-gradient(180deg,#6b86bd,#5575b1); color:#fff; padding:22px; border-radius:12px; text-decoration:none; box-shadow:0 6px 16px rgba(0,0,0,.08); }
+.card h4 { margin:0 0 8px; letter-spacing:.5px; }
+.card p { margin:0; opacity:.95; }
+
+.header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; color:#fff;
+          background:#6b86bd; padding:12px 16px; border-radius:10px; }
+.header .link { color:#fff; text-decoration:none; }
+
+.main { background:#fff; border-radius:12px; padding:16px; box-shadow:0 6px 16px rgba(0,0,0,.06); }
+.chat-box { height:420px; overflow:auto; padding:8px; background:#f6f8fc; border-radius:10px; }
+.msg { max-width:70%; margin:8px 0; padding:10px 12px; border-radius:14px; line-height:1.3; }
+.msg.user { margin-left:auto; background:#4a6ea9; color:#fff; }
+.msg.bot  { background:#e9eef8; color:#2b3852; }
+.input-row { display:flex; gap:8px; margin-top:12px; }
+.input-row input { flex:1; padding:10px 12px; border-radius:10px; border:1px solid #cbd5e1; }
+.btn { background:#4a6ea9; color:#fff; border:none; padding:10px 14px; border-radius:10px; cursor:pointer; }
+.btn:hover { filter:brightness(.95); }
+
+.about { line-height:1.6; color:#2b3852; }
+.about h3 { color:#4a6ea9; margin-bottom:8px; }
+.about h4 { margin-top:24px; color:#344767; }
+.bio { list-style:none; padding:0; margin:0; }
+.bio li { margin-bottom:4px; }
+
+/* ===========================================
+   AUTH UI — Login & Register
+   Fokus: tampilan saja (tanpa ubah HTML)
+   =========================================== */
+
+/* ---------- Design tokens ---------- */
+:root {
+  --auth-bg1:  #6c8bd6;
+  --auth-bg2:  #405eae;
+  --auth-card: #ffffff;
+  --auth-text: #1f2937;
+  --auth-muted:#6b7280;
+  --auth-primary: #4f6fd0;
+  --auth-primary-2: #3e5cc2;
+  --auth-success-bg:#e8f7ee;
+  --auth-success-fg:#11623c;
+  --auth-error-bg:  #fdeaea;
+  --auth-error-fg:  #8f1d1d;
+  --auth-border: #e5e7eb;
+  --shadow-1: 0 6px 20px rgba(0,0,0,.12);
+  --shadow-2: 0 16px 48px rgba(0,0,0,.18);
+  --radius-lg: 16px;
+  --radius-md: 12px;
+}
+
+/* Dark mode otomatis */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --auth-bg1:  #0f1b3a;
+    --auth-bg2:  #0b1330;
+    --auth-card: #0f172a;
+    --auth-text: #e5e7eb;
+    --auth-muted:#a3a9b5;
+    --auth-primary: #6d8cff;
+    --auth-primary-2: #5876f3;
+    --auth-success-bg:#0f2b20;
+    --auth-success-fg:#a6f3c7;
+    --auth-error-bg:  #2a1212;
+    --auth-error-fg:  #ffb3b3;
+    --auth-border: #1f2937;
+    --shadow-1: 0 8px 26px rgba(0,0,0,.35);
+    --shadow-2: 0 24px 60px rgba(0,0,0,.45);
+  }
+}
+
+/* ---------- Background full ---------- */
+.auth-bg {
+  min-height: 100vh;
+  padding: 32px 18px;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(1200px 800px at 10% 10%, rgba(255,255,255,.18), transparent 40%),
+              radial-gradient(1000px 700px at 90% 20%, rgba(255,255,255,.12), transparent 45%),
+              linear-gradient(160deg, var(--auth-bg1) 0%, var(--auth-bg2) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative blobs */
+.auth-bg::before, .auth-bg::after {
+  content: "";
+  position: absolute;
+  filter: blur(60px);
+  opacity: .35;
+  animation: floaty 14s ease-in-out infinite alternate;
+}
+.auth-bg::before {
+  width: 480px; height: 480px;
+  left: -120px; bottom: -120px;
+  background: radial-gradient(circle at 30% 30%, #ffffff66, transparent 60%);
+}
+.auth-bg::after {
+  width: 520px; height: 520px;
+  right: -140px; top: -140px;
+  background: radial-gradient(circle at 70% 70%, #ffffff55, transparent 60%);
+  animation-duration: 18s;
+}
+
+@keyframes floaty {
+  from { transform: translateY(-6px) translateX(0); }
+  to   { transform: translateY(6px) translateX(4px); }
+}
+
+/* ---------- Card ---------- */
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background: color-mix(in oklab, var(--auth-card) 92%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid color-mix(in oklab, var(--auth-border) 70%, transparent);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-1);
+  padding: 26px 22px;
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+.auth-card::after{
+  /* top accent line */
+  content:"";
+  position:absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--auth-primary), var(--auth-primary-2));
+  opacity: .9;
+}
+
+/* micro-hover lift */
+.auth-card:hover{
+  box-shadow: var(--shadow-2);
+  transform: translateY(-1px);
+}
+
+/* ---------- Titles ---------- */
+.auth-title{
+  margin: 2px 0 6px;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  color: var(--auth-text);
+}
+.auth-subtitle{
+  margin: 0 0 16px;
+  color: var(--auth-muted);
+  font-size: 14px;
+}
+
+/* ---------- Form ---------- */
+.auth-card form{
+  display: grid;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+/* Input wrapper (adds subtle focus ring) */
+.auth-input{
+  position: relative;
+}
+.auth-card input{
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--auth-border);
+  background: color-mix(in oklab, var(--auth-card) 98%, transparent);
+  color: var(--auth-text);
+  font-size: 14px;
+  transition: border-color .15s ease, box-shadow .2s ease, background .2s ease;
+}
+.auth-card input::placeholder{
+  color: color-mix(in oklab, var(--auth-muted) 80%, transparent);
+}
+.auth-card input:focus{
+  outline: none;
+  border-color: color-mix(in oklab, var(--auth-primary) 70%, #000 0%);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--auth-primary) 18%, transparent);
+  background: color-mix(in oklab, var(--auth-card) 100%, transparent);
+}
+
+/* ---------- Button ---------- */
+.auth-card .btn{
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  letter-spacing: .2px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(180deg, var(--auth-primary), var(--auth-primary-2));
+  color: #fff;
+  box-shadow: 0 8px 24px color-mix(in oklab, var(--auth-primary) 35%, transparent);
+  transition: transform .06s ease, filter .2s ease, box-shadow .2s ease;
+}
+.auth-card .btn:hover{
+  filter: brightness(.98);
+  box-shadow: 0 10px 30px color-mix(in oklab, var(--auth-primary) 45%, transparent);
+}
+.auth-card .btn:active{
+  transform: translateY(1px);
+}
+
+/* ---------- Helper text & links ---------- */
+.muted{
+  margin-top: 14px;
+  text-align: center;
+  color: var(--auth-muted);
+  font-size: 13px;
+}
+.muted a{
+  color: var(--auth-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+.muted a:hover{ text-decoration: underline; }
+
+/* ---------- Flash messages ---------- */
+.flash{
+  margin: 8px 0 4px;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  border: 1px solid transparent;
+}
+.flash.success{
+  background: var(--auth-success-bg);
+  color: var(--auth-success-fg);
+  border-color: color-mix(in oklab, var(--auth-success-fg) 24%, transparent);
+}
+.flash.error{
+  background: var(--auth-error-bg);
+  color: var(--auth-error-fg);
+  border-color: color-mix(in oklab, var(--auth-error-fg) 24%, transparent);
+}
+
+/* ---------- Small divider (opsional, jika nanti butuh) ---------- */
+.auth-divider{
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  color: var(--auth-muted);
+  font-size: 12px;
+}
+.auth-divider::before,
+.auth-divider::after{
+  content:"";
+  height: 1px;
+  background: color-mix(in oklab, var(--auth-border) 80%, transparent);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 560px){
+  .auth-card{ padding: 22px 18px; border-radius: 14px; }
+  .auth-title{ font-size: 22px; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  .auth-bg::before, .auth-bg::after{ animation: none; }
+  .auth-card, .auth-card .btn{ transition: none; }
+}
+
+/* inset kanan–kiri untuk semua field di login & register */
+.auth-card form{
+  padding-inline: 10px;      /* kiri–kanan 10px */
+}
+.auth-card input,
+.auth-card .btn{
+  width: 100%;
+  box-sizing: border-box;     /* pastikan hitung padding/border */
+}
+
+
+/* ===== ABOUT PAGE STYLING ===== */
+.about {
+  padding-bottom: 2rem;
+}
+
+.about h3, .about h4 {
+  color: #222;
+  margin-top: 1.5rem;
+}
+
+.bio {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 2rem 0;
+}
+
+.bio li {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+}
+
+.foto-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.foto-item img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.foto-item img:hover {
+  transform: scale(1.05);
+}
+
+.foto-item h5 {
+  margin-top: 1rem;
+  font-size: 1.05rem;
+  color: #333;
+}
+
+.foto-item p {
+  font-size: 0.9rem;
+  color: #666;
+}

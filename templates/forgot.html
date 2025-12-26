@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-bg">
+  <div class="auth-card" style="width:420px;">
+    <h1 class="auth-title">Lupa Password</h1>
+    <p class="auth-subtitle">
+      Masukkan username Anda. Jika terdaftar, link reset akan dikirim ke email.
+    </p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, msg in messages %}
+        <div class="flash {{ category }}">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('auth_forgot') }}">
+      <input
+        name="username"
+        placeholder="Username"
+        autocomplete="username"
+        required
+      >
+      <button class="btn" type="submit">Kirim Email Reset</button>
+    </form>
+
+    <p class="muted">
+      <a href="{{ url_for('auth_login') }}">Kembali ke Login</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

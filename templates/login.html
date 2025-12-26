@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-bg">
+  <div class="auth-card">
+    <h1 class="auth-title">Selamat Datang</h1>
+    <p class="auth-subtitle">Silakan masuk ke akun Anda untuk melanjutkan.</p>
+
+    {# flash message #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="flash {{ category }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('auth_login') }}">
+      <input name="identity" placeholder="Email atau Username" required>
+      <input name="password" type="password" placeholder="Password" required>
+      <button class="btn" type="submit">Masuk</button>
+    </form>
+
+    <p class="muted">Tidak punya akun? <a href="{{ url_for('auth_register') }}">Daftar sekarang Jugaa</a></p>
+
+    <p class="muted"><a href="{{ url_for('auth_forgot') }}">Lupa Password?</a></p>
+
+  </div>
+</div>
+{% endblock %}

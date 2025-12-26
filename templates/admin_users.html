@@ -1,0 +1,91 @@
+{% extends "admin_base.html" %}
+{% block content %}
+
+<h4 class="mb-3">Daftar Users</h4>
+
+<form class="row g-2 mb-3" method="get">
+  <div class="col-md-4 col-sm-6">
+    <input type="text" class="form-control" name="q" value="{{ q }}" placeholder="Cari username atau email…">
+  </div>
+  <div class="col-md-2 col-sm-3">
+    <input type="number" class="form-control" name="per_page" value="{{ per_page }}" min="5" max="100" title="Jumlah per halaman">
+  </div>
+  <div class="col-md-2 col-sm-3">
+    <button class="btn btn-primary w-100">Filter</button>
+  </div>
+</form>
+
+<div class="table-responsive">
+  <table class="table table-sm table-hover align-middle">
+    <thead>
+      <tr>
+        <th style="width:72px">ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th style="width:90px">Active</th>
+        <th style="width:90px">Admin</th>
+        <th style="width:90px">#Chats</th>
+        <th style="width:280px">Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ u.id }}</td>
+        <td>{{ u.username }}</td>
+        <td>{{ u.email }}</td>
+        <td>
+          <span class="badge {{ 'badge-yes' if u.is_active else 'badge-no' }}">
+            {{ 'Yes' if u.is_active else 'No' }}
+          </span>
+        </td>
+        <td>
+          <span class="badge {{ 'badge-yes' if u.is_admin else 'badge-no' }}">
+            {{ 'Yes' if u.is_admin else 'No' }}
+          </span>
+        </td>
+        <td>{{ counts.get(u.id, 0) }}</td>
+        <td class="text-nowrap">
+          <a class="btn btn-sm btn-outline-dark"
+             href="{{ url_for('admin_history', username=u.username) }}">Lihat History</a>
+
+          <form action="{{ url_for('admin_clear_user_history', user_id=u.id) }}"
+                method="post" style="display:inline"
+                onsubmit="return confirm('Hapus semua riwayat user {{u.username}}?');">
+            <button class="btn btn-sm btn-outline-warning">Clear History</button>
+          </form>
+
+          <form action="{{ url_for('admin_delete_user', user_id=u.id) }}"
+                method="post" style="display:inline"
+                onsubmit="return confirm('Hapus user {{u.username}} dan semua datanya? Tindakan ini tidak bisa dibatalkan.');">
+            <button class="btn btn-sm btn-outline-danger">Delete User</button>
+          </form>
+        </td>
+      </tr>
+      {% else %}
+      <tr>
+        <td colspan="7" class="text-center text-muted py-4">Belum ada data user.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% set last = (total // per_page) + (1 if total % per_page else 0) %}
+<nav aria-label="pagination">
+  <ul class="pagination">
+    <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+      <a class="page-link" href="{{ url_for('admin_users', q=q, per_page=per_page, page=page-1) }}">Prev</a>
+    </li>
+    <li class="page-item disabled">
+      <span class="page-link">Page {{ page }} / {{ last or 1 }}</span>
+    </li>
+    <li class="page-item {% if page >= last %}disabled{% endif %}">
+      <a class="page-link" href="{{ url_for('admin_users', q=q, per_page=per_page, page=page+1) }}">Next</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="admin-footer">Total users: <strong>{{ total }}</strong></div>
+
+{% endblock %}
