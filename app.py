@@ -74,7 +74,7 @@ MIN_COSINE  = 0.84
 MIN_HYBRID  = 0.15
 
 FALLBACK_TEXT        = "maaf pengetahuan tidak ada dalam database"
-GUARDRAIL_BLOCK_TEXT = "maaf, pertanyaan ditolak oleh guardrail"
+GUARDRAIL_BLOCK_TEXT = "maaf, pertanyaan ditolak. tolong masukan pertanyaan lain"
 ENABLE_PROFILING     = False
 
 # ========= APP =========
