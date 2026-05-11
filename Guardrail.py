@@ -61,3 +61,12 @@ def validate_input(text: str, threshold: float = 0.2) -> bool:
         print(" Tidak lolos guardrail.")
         return False
 
+if __name__ == "__main__":
+    while True:
+        text = input("\nMasukkan pertanyaan (ketik 'exit' untuk keluar): ")
+        if text.lower() == "exit":
+            break
+        
+        result = validate_input(text)
+        print("Hasil validasi:", result)
+
